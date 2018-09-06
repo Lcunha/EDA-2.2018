@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 void hanoi(int qtd){
+    // declarações 
     char origem = 'A';
     char destino = 'C';
     char auxiliar = 'B'
@@ -9,11 +10,12 @@ void hanoi(int qtd){
     	printf("Mova o disco 1 de %c para %c \n",origem ,destino);
     	return;
     }
-
+    // 1º ação de recursividade
     hanoi(qtd-1,origem,auxiliar,destino);
 
     printf("Mova o disco %d de %c para %c \n",n,origem,destino);
 
+    //2º ação de recursividade
     hanoi(qtd-1,auxiliar,destino,origem);
 }
 
