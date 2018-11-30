@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <time.h>
 #include <math.h>
+#define MAXLINHA 50
+#define MAXCOLUNA 536
 //projeto 2
 FILE *getAsphaltImage(FILE *, int id);
 FILE *getGrassImage(FILE *fp, int id);
@@ -43,27 +45,28 @@ int main(int argc, char *argv[])
 
 void projeto2()
 {
-  int grass[50], asphalt[50];
+  printf ("\n Gerando Vetores pelo Projeto 2.. aguarde.\n");
+  int grass[MAXLINHA], asphalt[MAXLINHA];
   int lin = 0, col = 0, aux = 0;
   int **matrizFile, *ilbp;
   float *glcm, *ilbpGlcm, *ilbpGlcmNormalizadoGrass, *ilbpGlcmNormalizadoAsphaut, *mediaGrama, *mediaAsfalto;
   float **resultadoGrama, **resultadoAsfalto, **treinamentoResultadoGrama, **treinamentoResultoAsfalto;
 
-  resultadoAsfalto = (float **)malloc(50 * sizeof(float *));
+  resultadoAsfalto = (float **)malloc(MAXLINHA * sizeof(float *));
 
-  for (int i = 0; i < 50; i++)
+  for (int i = 0; i < MAXLINHA; i++)
   {
-    *(resultadoAsfalto + i) = (float *)malloc(536 * sizeof(float));
+    *(resultadoAsfalto + i) = (float *)malloc(MAXCOLUNA * sizeof(float));
   }
 
-  doRandom(asphalt, 50);
+  doRandom(asphalt, MAXLINHA);
   aux = 0;
   FILE *auxAsphalt;
   auxAsphalt = fopen("asphalt.txt", "w+");
   FILE *auxGrass;
   auxGrass = fopen("grass.txt", "w+");
 
-  for (int i = 0; i < 50; i++)
+  for (int i = 0; i < MAXLINHA; i++)
   {
     FILE *fileAsphalt;
     fileAsphalt = getAsphaltImage(fileAsphalt, asphalt[i]);
@@ -77,13 +80,13 @@ void projeto2()
 
     ilbp = (int *)calloc(512, sizeof(int *));
     glcm = (float *)calloc(24, sizeof(float));
-    ilbpGlcm = (float *)calloc(536, sizeof(float));
-    ilbpGlcmNormalizadoAsphaut = (float *)calloc(536, sizeof(float));
+    ilbpGlcm = (float *)calloc(MAXCOLUNA, sizeof(float));
+    ilbpGlcmNormalizadoAsphaut = (float *)calloc(MAXCOLUNA, sizeof(float));
 
     ILBP(matrizFile, lin, col, ilbp);
     GLCM(matrizFile, lin, col, glcm);
     concatenaIlbpGlcm(ilbpGlcm, ilbp, glcm);
-    normalize(ilbpGlcm, ilbpGlcmNormalizadoAsphaut, 536);
+    normalize(ilbpGlcm, ilbpGlcmNormalizadoAsphaut, MAXCOLUNA);
     salvarVetor(auxAsphalt, ilbpGlcmNormalizadoAsphaut, asphalt[i]);
 
     free(ilbp);
@@ -99,14 +102,14 @@ void projeto2()
     free(ilbpGlcmNormalizadoAsphaut);
   }
 
-  resultadoGrama = (float **)malloc(50 * sizeof(float *));
-  for (int i = 0; i < 50; i++)
+  resultadoGrama = (float **)malloc(MAXLINHA * sizeof(float *));
+  for (int i = 0; i < MAXLINHA; i++)
   {
-    *(resultadoGrama + i) = (float *)malloc(536 * sizeof(float));
+    *(resultadoGrama + i) = (float *)malloc(MAXCOLUNA * sizeof(float));
   }
-  doRandom(grass, 50);
+  doRandom(grass, MAXLINHA);
   aux = 0;
-  for (int i = 0; i < 50; i++)
+  for (int i = 0; i < MAXLINHA; i++)
   {
     FILE *fileGrass;
     fileGrass = getGrassImage(fileGrass, grass[i]);
@@ -120,12 +123,12 @@ void projeto2()
 
     ilbp = (int *)calloc(512, sizeof(int *));
     glcm = (float *)calloc(24, sizeof(float));
-    ilbpGlcm = (float *)calloc(536, sizeof(float));
-    ilbpGlcmNormalizadoGrass = (float *)calloc(536, sizeof(float));
+    ilbpGlcm = (float *)calloc(MAXCOLUNA, sizeof(float));
+    ilbpGlcmNormalizadoGrass = (float *)calloc(MAXCOLUNA, sizeof(float));
     ILBP(matrizFile, lin, col, ilbp);
     GLCM(matrizFile, lin, col, glcm);
     concatenaIlbpGlcm(ilbpGlcm, ilbp, glcm);
-    normalize(ilbpGlcm, ilbpGlcmNormalizadoGrass, 536);
+    normalize(ilbpGlcm, ilbpGlcmNormalizadoGrass, MAXCOLUNA);
 
     salvarVetor(auxGrass, ilbpGlcmNormalizadoGrass, grass[i]);
 
@@ -149,7 +152,7 @@ void projeto2()
 void salvarVetor(FILE *vetor, float *vetNormalizado, int grassVet)
 {
   int i = 0;
-  while (i < 536)
+  while (i < MAXCOLUNA)
   {
     fprintf(vetor, "%f ", vetNormalizado[i]);
     i++;
@@ -159,7 +162,7 @@ void salvarVetor(FILE *vetor, float *vetNormalizado, int grassVet)
 
 void calculaMediaTreinamento(float **matTreinamento, float *vetMedia)
 {
-  for (int i = 0; i < 536; i++)
+  for (int i = 0; i < MAXCOLUNA; i++)
   {
     for (int j = 0; j < 25; j++)
     {
@@ -171,7 +174,7 @@ void calculaMediaTreinamento(float **matTreinamento, float *vetMedia)
 
 void setResultado(float **matResultado, float *vetNormalizado, int *contador)
 {
-  for (int i = 0; i < 536; i++)
+  for (int i = 0; i < MAXCOLUNA; i++)
   {
     *(*(matResultado + (*contador)) + i) = *(vetNormalizado + i);
   }
@@ -184,7 +187,7 @@ void concatenaIlbpGlcm(float *ilbpGlcm, int *ilbp, float *glcm)
   {
     *(ilbpGlcm + j) = *(ilbp + j);
   }
-  for (int j = 512; j < 536; j++)
+  for (int j = 512; j < MAXCOLUNA; j++)
   {
     *(ilbpGlcm + j) = *(glcm + (j - 512));
   }
@@ -192,7 +195,6 @@ void concatenaIlbpGlcm(float *ilbpGlcm, int *ilbp, float *glcm)
 
 void ILBP(int **matrizFile, int lin, int col, int *ilbp)
 {
-
   char vetorBinario[9];
   int menorDecimal;
 
@@ -209,8 +211,7 @@ void ILBP(int **matrizFile, int lin, int col, int *ilbp)
 
 int calcMenorDecimal(char *bin)
 {
-
-  int decimal, m = 0, menorNumero = 512;
+  int decimal, m = 0, menor = 512;
   char aux;
   int dec[9];
 
@@ -240,12 +241,12 @@ int calcMenorDecimal(char *bin)
 
   for (int i = 0; i < 9; i++)
   {
-    if (menorNumero > dec[i])
+    if (menor > dec[i])
     {
-      menorNumero = dec[i];
+      menor = dec[i];
     }
   }
-  return menorNumero;
+  return menor;
 }
 
 void setVetorBinario(int **matrizFile, int lin, int col, char *vetorbin)
@@ -395,7 +396,6 @@ void doRandom(int *vet, int limite)
 void normalize(float *vet, float *vetNormalizado, int limite)
 {
   float menor = 9999999, maior = 0;
-
   for (int i = 0; i < limite; i++)
   {
     if (vet[i] < menor)
