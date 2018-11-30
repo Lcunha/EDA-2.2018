@@ -18,8 +18,7 @@ void normalize(float *vet, float *vetNormalizado, int limite);
 void concatenaIlbpGlcm(float *ilbpGlcm, int *ilbp, float *glcm);
 void calculaMediaTreinamento(float **matTreinamento, float *vetMedia);
 void setResultado(float **matResultado, float *vetNormalizado, int *contador);
-void salvarVetorAsphalt(FILE *auxAsphalt, float *vetNormalizado, int asphaltVet);
-void salvarVetorGrass(FILE *auxGrass, float *vetNormalizado, int grassVet);
+void salvarVetor(FILE *auxGrass, float *vetNormalizado, int typeVet);
 void setVetorBinario(int **matrizFile, int lin, int col, char *vetorbin);
 
 int calcMenorDecimal(char *bin);
@@ -31,18 +30,19 @@ void projeto2();
 
 int main(int argc, char *argv[])
 {
-    projeto2();
-    int neuronios_Camadaoculta = atoi(argv[1]);
-    if (argc != 2)
-    {
-        printf("Parametro incorreto. Exit.\n");
-        exit(1);
-    }
-    printf("Neuronios Camada Oculta: %d\n-----------------------------\n", neuronios_Camadaoculta);
-    return 0;
+  projeto2();
+  int neuronios_Camadaoculta = atoi(argv[1]);
+  if (argc != 2)
+  {
+    printf("Parametro incorreto. Exit.\n");
+    exit(1);
+  }
+  printf("Neuronios Camada Oculta: %d\n-----------------------------\n", neuronios_Camadaoculta);
+  return 0;
 }
 
-void projeto2(){
+void projeto2()
+{
   int grass[50], asphalt[50];
   int lin = 0, col = 0, aux = 0;
   int **matrizFile, *ilbp;
@@ -84,7 +84,7 @@ void projeto2(){
     GLCM(matrizFile, lin, col, glcm);
     concatenaIlbpGlcm(ilbpGlcm, ilbp, glcm);
     normalize(ilbpGlcm, ilbpGlcmNormalizadoAsphaut, 536);
-    salvarVetorAsphalt(auxAsphalt, ilbpGlcmNormalizadoAsphaut, asphalt[i]);
+    salvarVetor(auxAsphalt, ilbpGlcmNormalizadoAsphaut, asphalt[i]);
 
     free(ilbp);
     free(glcm);
@@ -127,7 +127,7 @@ void projeto2(){
     concatenaIlbpGlcm(ilbpGlcm, ilbp, glcm);
     normalize(ilbpGlcm, ilbpGlcmNormalizadoGrass, 536);
 
-    salvarVetorGrass(auxGrass, ilbpGlcmNormalizadoGrass, grass[i]);
+    salvarVetor(auxGrass, ilbpGlcmNormalizadoGrass, grass[i]);
 
     free(ilbp);
     free(glcm);
@@ -143,35 +143,18 @@ void projeto2(){
 
   fclose(auxAsphalt);
   fclose(auxGrass);
-}//fim do projeto2
+} //fim do projeto2
 
 //funçoes projeto 2
-void salvarVetorGrass(FILE *grass, float *vetNormalizado, int grassVet)
+void salvarVetor(FILE *vetor, float *vetNormalizado, int grassVet)
 {
   int i = 0;
   while (i < 536)
   {
-    fprintf(grass, "%f", vetNormalizado[i]);
+    fprintf(vetor, "%f ", vetNormalizado[i]);
     i++;
   }
-  fprintf(grass, "%f\n", vetNormalizado[i]);
-}
-
-void salvarVetorAsphalt(FILE *asphalt, float *vetNormalizado, int asphaltVet)
-{
-
-  for (int i = 0; i < 536; i++)
-  {
-
-    if (i == 535)
-    {
-      fprintf(asphalt, "%f\n", vetNormalizado[i]);
-    }
-    else
-    {
-      fprintf(asphalt, "%f\n", vetNormalizado[i]);
-    }
-  }
+  fprintf(vetor, "%f\n", vetNormalizado[i]);
 }
 
 void calculaMediaTreinamento(float **matTreinamento, float *vetMedia)
@@ -361,7 +344,7 @@ FILE *getAsphaltImage(FILE *fp, int id)
     sprintf(asphalt, "DataSet/asphalt/asphalt_0%d.txt", id);
   else
     sprintf(asphalt, "DataSet/asphalt/asphalt_%d.txt", id);
-    
+
   fp = fopen(asphalt, "r");
 
   if (fp == NULL)
