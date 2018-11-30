@@ -1,4 +1,4 @@
-$gcc eda6.c -lm -o eda6
-$./eda6 X
+$gcc eda6.c -lm -o eda
+$./eda X
 
 X = valor de neuronios camada oculta
