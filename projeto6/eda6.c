@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
   int opcao = 0;
   while (opcao < 1 || opcao > 2)
   {
-    printf("Ja possui vetores do projeto 2?\n");
+    printf("\nJa possui vetores do projeto 2?\n");
     printf("1 - para SIM \n2 - para NAO\n opcao: ");
     scanf("%d", &opcao);
   }
@@ -20,6 +20,6 @@ int main(int argc, char *argv[])
     printf("Parametro incorreto. Exit.\n");
     exit(1);
   }
-  printf("Neuronios Camada Oculta: %d\n-----------------------------\n", neuronios_Camadaoculta);
+  printf("\n\n\n--------------------------------\nNeuronios Camada Oculta: %d\n--------------------------------\n", neuronios_Camadaoculta);
   return 0;
 } //fim da main
