@@ -4,15 +4,16 @@
 
 int main(int argc, char *argv[])
 {
-  int opcao =0;
-  while (opcao <1 || opcao >2){
-    printf ("Ja possui vetores do projeto 2?\n");
+  int opcao = 0;
+  while (opcao < 1 || opcao > 2)
+  {
+    printf("Ja possui vetores do projeto 2?\n");
     printf("1 - para SIM \n2 - para NAO\n opcao: ");
     scanf("%d", &opcao);
   }
-  if(opcao ==2)
+  if (opcao == 2)
     projeto2();
-    
+
   int neuronios_Camadaoculta = atoi(argv[1]);
   if (argc != 2)
   {
@@ -21,4 +22,4 @@ int main(int argc, char *argv[])
   }
   printf("Neuronios Camada Oculta: %d\n-----------------------------\n", neuronios_Camadaoculta);
   return 0;
-}//fim da main
+} //fim da main

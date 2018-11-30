@@ -32,10 +32,9 @@ double calculaHomogeneidade(int **matriz, int linhaColuna);
 double calculaEnergia(int **matriz, int linhaColuna);
 //fim do projeto 2
 
-
 void projeto2()
 {
-  printf ("\n Gerando Vetores pelo Projeto 2.. aguarde.\n");
+  printf("\n Gerando Vetores pelo Projeto 2.. aguarde.\n");
   int grass[MAXLINHA], asphalt[MAXLINHA];
   int lin = 0, col = 0, aux = 0;
   int **matrizFile, *ilbp;
@@ -567,8 +566,4 @@ double calculaEnergia(int **matriz, int linhaColuna)
   return total;
 }
 //fim funções do projeto 2
-
-
-
-
 #endif
