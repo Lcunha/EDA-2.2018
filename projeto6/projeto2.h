@@ -141,13 +141,16 @@ void projeto2()
 //funçoes projeto 2
 void salvarVetor(FILE *vetor, float *vetNormalizado, int grassVet)
 {
+  int linha =0;
   int i = 0;
   while (i < MAXCOLUNA)
   {
     fprintf(vetor, "%f ", vetNormalizado[i]);
     i++;
   }
-  fprintf(vetor, "%f\n", vetNormalizado[i]);
+  linha++;
+  if (linha <51)
+    fprintf(vetor, "%f\n", vetNormalizado[i]);
 }
 
 void calculaMediaTreinamento(float **matTreinamento, float *vetMedia)
