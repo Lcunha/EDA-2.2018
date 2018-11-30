@@ -5,20 +5,6 @@
 #include <math.h>
 #include "projeto2.h"
 #include "projeto6.h"
-typedef struct neuronio
-{
-  double s; //Saida
-  struct neuronio **proxima;
-} Neuronio;
-
-Neuronio *do_neuronio(double *p, double b);
-int load_features(double **feature, char *url);
-double do_ciclo_neuronio(double *p_camada_entrada, int qtd_neuronios_ocultos);
-double calculo_saida_neuronio(double *p, double *w, double b);
-void set_matriz_feature(FILE *arq, double **matriz_feature, int lin, int col);
-void do_vetor_random(double *vetor, int semente);
-void set_proxima_camada(Neuronio **camada,int tam_camada, Neuronio **proxima_camada);
-void projeto6(int n_oculto);
 
 int main(int argc, char *argv[])
 {
