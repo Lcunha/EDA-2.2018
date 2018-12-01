@@ -3,7 +3,7 @@
 #include "projeto2.h"
 
 //declaraçoes de funcoes
-
+void mesclador();
 //executar projeto6
 void projeto6(int n_camadaoculta){
     mesclador();
