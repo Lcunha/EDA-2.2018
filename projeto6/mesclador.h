@@ -12,7 +12,7 @@
 //mesclador separa arquivos para treino e teste
 void mesclador()
 {
-    printf("Arquivos ja sorteados e vetorizados!\nSeparando teste e treino..\n\n");
+    printf("\t Arquivos ja sorteados e vetorizados!\n\t Separando arquivos para teste e treino..\n\n");
     FILE *testeAG;
     FILE *treinoAG;
     FILE *asphalt;

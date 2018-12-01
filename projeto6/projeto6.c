@@ -661,8 +661,8 @@ void imprimeResultadoPrevisao(Neuronio *neuronios, InputMatrix *previsao, FILE *
 
 int main(int argc, char *argv[])
 {
-    printf("\n\tVAMOS GERAR OS DADOS DAS FEATURES DO PROJETO 2. VAI DEMORAR, FIQUE CALMO!!\n");
-    projeto2();
+    printf("\n\t APROVEITANDO DADOS DAS FEATURES DO PROJETO 2.\n");
+    //projeto2();
     mesclador();
 	double start_treino, end_treino, total_treino;
 	start_treino = clock();
