@@ -1,10 +1,3 @@
-/* 
-        Rede Neural Artificial 
-	Perceptron Multi-Camadas treinada por Back Propagation com Momentum
-	
-        geraldo.rabelo@gmail.com 23/05/2017
-	06/06/2017 - atualizacoes: funcoes de ativacao diversas; momentum.
-*/
 
 #include <stdlib.h>
 #include <stdio.h>
