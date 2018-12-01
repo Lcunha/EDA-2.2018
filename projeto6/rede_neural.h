@@ -1,5 +1,5 @@
-#ifndef REDE_NEURAL_H
-#define REDE_NEURAL_H
+#ifndef REDENEURAL_H
+#define REDENEURAL_H
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -9,6 +9,7 @@
 #include <ctype.h>
 #include "projeto2.h"
 #include "projeto6.h"
+#include "mesclador.h"
 
 #define MAX_LINHA 5000
 #define MAX_VALOR 1000
@@ -54,9 +55,9 @@ int *neuroniosPorCamada = NULL;
 char saida[32];
 
 //declarações de funões
+Neuronio *criaRedeNeuronal(int *neuroniosPorCamada);
 float getEntrada(FILE *arquivo, int linhaArquivo, int entradaArquivo);
 float getAlvos(FILE *arquivo, int linhaArquivo);
-Neuronio *criaRedeNeuronal(int *neuroniosPorCamada);
 int treinaRedeNeuronal(Neuronio *neuronios, int *neuroniosPorCamada, InputMatrix *inputs, TargetMatrix *targets);
 void prever(Neuronio *neuronios, int *neuroniosPorCamada, InputMatrix *previsao, float *previsaoResultados);
 

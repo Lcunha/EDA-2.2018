@@ -9,6 +9,7 @@
 #include <math.h>
 #include "projeto2.h"
 #include "projeto6.h"
+#include "rede_neural.h"
 
 //mesclador separa arquivos para treino e teste
 void mesclador()
