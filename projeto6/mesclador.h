@@ -9,19 +9,20 @@
 #include <math.h>
 #include "projeto2.h"
 #include "projeto6.h"
+#include "rede_neural.h"
 
 //mesclador separa arquivos para treino e teste
 void mesclador()
 {
-    printf("Arquivos ja sorteados e vetorizados!\nSeparando teste e treino..");
+    printf("Arquivos ja sorteados e vetorizados!\nSeparando teste e treino..\n\n");
     FILE *testeAG;
     FILE *treinoAG;
     FILE *asphalt;
     FILE *grass;
-    asphalt = fopen("asphalt.dat", "r");
-    grass = fopen("grass.dat", "r");
-    testeAG = fopen("testeAG.dat", "w+");
-    treinoAG = fopen("treinoAG.dat", "w+");
+    asphalt = fopen("arquivos/asphalt.dat", "r");
+    grass = fopen("arquivos/grass.dat", "r");
+    testeAG = fopen("arquivos/teste.dat", "w+");
+    treinoAG = fopen("arquivos/treino.dat", "w+");
     int z = 0;
     char tranf;
     while (z < 25)
@@ -56,7 +57,6 @@ void mesclador()
             z++;
     }
 
-    fclose(testeAG);
     fclose(testeAG);
     fclose(treinoAG);
     fclose(asphalt);

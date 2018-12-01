@@ -1,11 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <time.h>
-#include <math.h>
 #include "projeto2.h"
 #include "projeto6.h"
 #include "mesclador.h"
+#include "rede_neural.h"
 
 int main(int argc, char *argv[])
 {

@@ -3,11 +3,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <time.h>
 #include <math.h>
 #include "projeto6.h"
 #include "mesclador.h"
+#include "rede_neural.h"
 
 #define MAXLINHA 50
 #define MAXCOLUNA 536
@@ -15,7 +14,7 @@
 FILE *getAsphaltImage(FILE *, int id);
 FILE *getGrassImage(FILE *fp, int id);
 
-void doRandom(int *, int limite);
+void f_random(int *, int limite);
 void linhasColunas(FILE *, int *linhas, int *colunas);
 void setMatrizFile(FILE *fp, int **matrizFile, int lin, int col);
 void ILBP(int **matrizFile, int lin, int col, int *ilbp);
@@ -24,8 +23,6 @@ void calculaMetricas(int **glcm, float *metricas, int initialPosition, int linha
 void euclidianDistance(int *vetorNormalizado, int *vetorA, int *vetorB, int limite);
 void normalize(float *vet, float *vetNormalizado, int limite);
 void concatenaIlbpGlcm(float *ilbpGlcm, int *ilbp, float *glcm);
-void calculaMediaTreinamento(float **matTreinamento, float *vetMedia);
-void setResultado(float **matResultado, float *vetNormalizado, int *contador);
 void salvarVetor(FILE *auxGrass, float *vetNormalizado, int typeVet);
 void setVetorBinario(int **matrizFile, int lin, int col, char *vetorbin);
 
@@ -51,12 +48,12 @@ void projeto2()
     *(resultadoAsfalto + i) = (float *)malloc(MAXCOLUNA * sizeof(float));
   }
 
-  doRandom(asphalt, MAXLINHA);
+  f_random(asphalt, MAXLINHA);
   aux = 0;
   FILE *auxAsphalt;
-  auxAsphalt = fopen("asphalt.dat", "w+");
+  auxAsphalt = fopen("arquivos/asphalt.dat", "w+");
   FILE *auxGrass;
-  auxGrass = fopen("grass.dat", "w+");
+  auxGrass = fopen("arquivos/grass.dat", "w+");
 
   for (int i = 0; i < MAXLINHA; i++)
   {
@@ -99,7 +96,7 @@ void projeto2()
   {
     *(resultadoGrama + i) = (float *)malloc(MAXCOLUNA * sizeof(float));
   }
-  doRandom(grass, MAXLINHA);
+  f_random(grass, MAXLINHA);
   aux = 0;
   printf("Aguarde, so mais um pouco! =P\n");
   //aqui
@@ -154,27 +151,6 @@ void salvarVetor(FILE *vetor, float *vetNormalizado, int typeVet)
   linha++;
   if (linha <50)
     fprintf(vetor, "%f;:%d;\n", vetNormalizado[i], typeVet);
-}
-
-void calculaMediaTreinamento(float **matTreinamento, float *vetMedia)
-{
-  for (int i = 0; i < MAXCOLUNA; i++)
-  {
-    for (int j = 0; j < 25; j++)
-    {
-      vetMedia[i] += matTreinamento[j][i];
-    }
-    vetMedia[i] = vetMedia[i] / 25.0;
-  }
-}
-
-void setResultado(float **matResultado, float *vetNormalizado, int *contador)
-{
-  for (int i = 0; i < MAXCOLUNA; i++)
-  {
-    *(*(matResultado + (*contador)) + i) = *(vetNormalizado + i);
-  }
-  contador++;
 }
 
 void concatenaIlbpGlcm(float *ilbpGlcm, int *ilbp, float *glcm)
@@ -370,7 +346,7 @@ FILE *getGrassImage(FILE *fp, int id)
   return fp;
 }
 
-void doRandom(int *vet, int limite)
+void f_random(int *vet, int limite)
 {
   srand(time(NULL));
   for (int i = 1; i < limite + 1; i++)
