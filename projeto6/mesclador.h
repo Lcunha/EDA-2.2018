@@ -17,10 +17,10 @@ void mesclador()
     FILE *treinoAG;
     FILE *asphalt;
     FILE *grass;
-    asphalt = fopen("arquivos/asphalt.dat", "r");
-    grass = fopen("arquivos/grass.dat", "r");
-    testeAG = fopen("arquivos/teste.dat", "w+");
-    treinoAG = fopen("arquivos/treino.dat", "w+");
+    asphalt = fopen("asphalt.dat", "r");
+    grass = fopen("grass.dat", "r");
+    testeAG = fopen("teste.dat", "w+");
+    treinoAG = fopen("treino.dat", "w+");
     int z = 0;
     char tranf;
     while (z < 25)

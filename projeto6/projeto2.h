@@ -32,7 +32,7 @@ double calculaEnergia(int **matriz, int linhaColuna);
 
 void projeto2()
 {
-  printf("\n Gerando Vetores pelo Projeto 2.. aguarde.\n");
+  printf("\t Gerando Vetores pelo Projeto 2.. aguarde.\n");
   int grass[MAXLINHA], asphalt[MAXLINHA];
   int lin = 0, col = 0, aux = 0;
   int **matrizFile, *ilbp;
@@ -49,9 +49,9 @@ void projeto2()
   f_random(asphalt, MAXLINHA);
   aux = 0;
   FILE *auxAsphalt;
-  auxAsphalt = fopen("arquivos/asphalt.dat", "w+");
+  auxAsphalt = fopen("asphalt.dat", "w+");
   FILE *auxGrass;
-  auxGrass = fopen("arquivos/grass.dat", "w+");
+  auxGrass = fopen("grass.dat", "w+");
 
   for (int i = 0; i < MAXLINHA; i++)
   {
@@ -96,7 +96,7 @@ void projeto2()
   }
   f_random(grass, MAXLINHA);
   aux = 0;
-  printf("Aguarde, so mais um pouco! =P\n");
+  printf("\tAguarde, so mais um pouco! =P\n");
   //aqui
   for (int i = 0; i < MAXLINHA; i++)
   {

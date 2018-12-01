@@ -1,6 +1,8 @@
-$gcc eda6.c -lm -o eda
-$./eda X
+
+gcc projeto6.c projeto2.h mesclador.h -o proj6 -lm
+$./proj6 X
 
 X = valor de neuronios camada oculta
 
-arquivos gerados na pasta /arquivos
+Guilherme Lima Matos Leal - 15/0128312
+Lucas Filipe de Carvalho Cunha - 18/0053817
