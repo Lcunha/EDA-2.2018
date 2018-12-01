@@ -51,9 +51,9 @@ void projeto2()
   doRandom(asphalt, MAXLINHA);
   aux = 0;
   FILE *auxAsphalt;
-  auxAsphalt = fopen("asphalt.txt", "w+");
+  auxAsphalt = fopen("asphalt.dat", "w+");
   FILE *auxGrass;
-  auxGrass = fopen("grass.txt", "w+");
+  auxGrass = fopen("grass.dat", "w+");
 
   for (int i = 0; i < MAXLINHA; i++)
   {
@@ -76,7 +76,7 @@ void projeto2()
     GLCM(matrizFile, lin, col, glcm);
     concatenaIlbpGlcm(ilbpGlcm, ilbp, glcm);
     normalize(ilbpGlcm, ilbpGlcmNormalizadoAsphaut, MAXCOLUNA);
-    salvarVetor(auxAsphalt, ilbpGlcmNormalizadoAsphaut, asphalt[i]);
+    salvarVetor(auxAsphalt, ilbpGlcmNormalizadoAsphaut, 0);
 
     free(ilbp);
     free(glcm);
@@ -99,6 +99,7 @@ void projeto2()
   doRandom(grass, MAXLINHA);
   aux = 0;
   printf("Aguarde, so mais um pouco! =P\n");
+  //aqui
   for (int i = 0; i < MAXLINHA; i++)
   {
     FILE *fileGrass;
@@ -120,7 +121,7 @@ void projeto2()
     concatenaIlbpGlcm(ilbpGlcm, ilbp, glcm);
     normalize(ilbpGlcm, ilbpGlcmNormalizadoGrass, MAXCOLUNA);
 
-    salvarVetor(auxGrass, ilbpGlcmNormalizadoGrass, grass[i]);
+    salvarVetor(auxGrass, ilbpGlcmNormalizadoGrass, 1);
 
     free(ilbp);
     free(glcm);
@@ -139,18 +140,19 @@ void projeto2()
 } //fim do projeto2
 
 //funçoes projeto 2
-void salvarVetor(FILE *vetor, float *vetNormalizado, int grassVet)
+void salvarVetor(FILE *vetor, float *vetNormalizado, int typeVet)
 {
   int linha =0;
   int i = 0;
-  while (i < MAXCOLUNA)
+  //(MAXCOLUNA*2)+3)
+  while (i < (MAXCOLUNA)) 
   {
-    fprintf(vetor, "%f ", vetNormalizado[i]);
+    fprintf(vetor, "%f;", vetNormalizado[i]);
     i++;
   }
   linha++;
-  if (linha <51)
-    fprintf(vetor, "%f\n", vetNormalizado[i]);
+  if (linha <50)
+    fprintf(vetor, "%f;:%d;\n", vetNormalizado[i],typeVet);
 }
 
 void calculaMediaTreinamento(float **matTreinamento, float *vetMedia)
