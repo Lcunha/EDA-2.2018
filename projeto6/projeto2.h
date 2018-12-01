@@ -4,9 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "projeto6.h"
 #include "mesclador.h"
-#include "rede_neural.h"
 
 #define MAXLINHA 50
 #define MAXCOLUNA 536
