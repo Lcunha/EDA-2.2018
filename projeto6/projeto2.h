@@ -6,6 +6,9 @@
 #include <stdbool.h>
 #include <time.h>
 #include <math.h>
+#include "projeto6.h"
+#include "mesclador.h"
+
 #define MAXLINHA 50
 #define MAXCOLUNA 536
 //projeto 2
@@ -134,24 +137,23 @@ void projeto2()
     fclose(fileGrass);
     free(ilbpGlcmNormalizadoGrass);
   }
-   fclose(auxAsphalt);
-   fclose(auxGrass);
+  fclose(auxAsphalt);
+  fclose(auxGrass);
 } //fim do projeto2
 
 //funçoes projeto 2
 void salvarVetor(FILE *vetor, float *vetNormalizado, int typeVet)
 {
-  int linha =0;
+  int linha = 0;
   int i = 0;
-  //(MAXCOLUNA*2)+3)
-  while (i < (MAXCOLUNA)) 
+  while (i < (MAXCOLUNA))
   {
     fprintf(vetor, "%f;", vetNormalizado[i]);
     i++;
   }
   linha++;
   if (linha <50)
-    fprintf(vetor, "%f;:%d;\n", vetNormalizado[i],typeVet);
+    fprintf(vetor, "%f;:%d;\n", vetNormalizado[i], typeVet);
 }
 
 void calculaMediaTreinamento(float **matTreinamento, float *vetMedia)
