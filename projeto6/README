@@ -2,3 +2,5 @@ $gcc eda6.c -lm -o eda
 $./eda X
 
 X = valor de neuronios camada oculta
+
+arquivos gerados na pasta /arquivos

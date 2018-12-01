@@ -3,19 +3,16 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <time.h>
-#include <math.h>
 #include "projeto2.h"
 #include "mesclador.h"
+#include "rede_neural.h"
 
 //declaraçoes de funcoes
 //executar projeto6
 void projeto6(int n_camadaoculta)
 {   
-    printf ("aqui");
     mesclador();
-
+    redeNeural(n_camadaoculta);
 } //fim projeto 6
 
 //funções projeto 6
