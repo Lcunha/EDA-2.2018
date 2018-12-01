@@ -134,9 +134,8 @@ void projeto2()
     fclose(fileGrass);
     free(ilbpGlcmNormalizadoGrass);
   }
-
-  fclose(auxAsphalt);
-  fclose(auxGrass);
+   fclose(auxAsphalt);
+   fclose(auxGrass);
 } //fim do projeto2
 
 //funçoes projeto 2
