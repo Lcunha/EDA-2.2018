@@ -30,7 +30,7 @@ struct neuronio
 	float *entradas;
 	float *pesos;
 	float *pesosAntigos; //para o algoritmo BP
-	float *momentum;     //para buscar o minimo global
+	float *momentum;	 //para buscar o minimo global
 	float saida;
 	//int         camada;
 } RNA;
@@ -475,17 +475,6 @@ int treinaRedeNeuronal(Neuronio *neuronios, int *neuroniosPorCamada, InputMatrix
 				}
 				camadaAtual++;
 			}
-			if (epocaContador == MAX_EPOCAS - 1)
-			{
-
-				printf("\n\t\tEntrada %d: { ", entradasQuantidade);
-				for (entradaContador = 0; entradaContador < neuroniosPorCamada[0] - 1; entradaContador++)
-				{
-					printf("%.6f,", neuronios[entradaContador].saida);
-				}
-
-				printf("%.3f }; Alvo: %.6f; Previsão: %.6f", neuronios[entradaContador].saida, targets[0].linha[entradasQuantidade], neuronios[neuronioContador - 1].saida);
-			}
 
 			//printf(", Erro Quadratico: %.3f",erro);
 			erro = derivadaDoErroQuadratico(neuronios[neuronioContador - 1].saida, targets[0].linha[entradasQuantidade]);
@@ -497,11 +486,6 @@ int treinaRedeNeuronal(Neuronio *neuronios, int *neuroniosPorCamada, InputMatrix
 			ajustaPesosAntigos(neuronios, neuroniosPorCamada);
 		}
 	}
-
-	printf("\n\n\t\tNumero de Epocas: %d", MAX_EPOCAS);
-	printf("\n\t\tTaxa de Aprendizado: %.6f\n", taxaDeAprendizado);
-
-	printf("\n");
 
 	return 1;
 }
@@ -602,7 +586,6 @@ float getEntrada(FILE *arquivo, int linhaArquivo, int entradaArquivo)
 	return resultado;
 }
 
-
 void prever(Neuronio *neuronios, int *neuroniosPorCamada, InputMatrix *previsao, float *previsaoResultados)
 {
 	//int totalCamadas = sizeof(neuroniosPorCamada)/sizeof(neuroniosPorCamada[0]);
@@ -670,6 +653,51 @@ void prever(Neuronio *neuronios, int *neuroniosPorCamada, InputMatrix *previsao,
 	//printf("\n\n");
 }
 
+void imprimeResultadoPrevisao(Neuronio *neuronios, InputMatrix *previsao, FILE *testeFile, float *previsaoResultados)
+{
+	int quantidadeDeLinhasDeEntrada = 50;
+	int qtdAcertos = 0, qtdFalsoAcerto = 0, qtdFalsaRejeicao = 0;
+	double acertos, falsosAceitos, falsosRejeicao;
+
+	for (int contadorLinha = 0; contadorLinha < quantidadeDeLinhasDeEntrada; contadorLinha++)
+	{
+		if (contadorLinha <= 25)
+		{
+
+			if (previsaoResultados[contadorLinha] <= 0.5)
+			{
+				qtdAcertos++;
+			}
+			else
+			{
+				qtdFalsaRejeicao++;
+			}
+		}
+		else
+		{ 
+
+			if (previsaoResultados[contadorLinha] > 0.5)
+			{
+				qtdAcertos++;
+			}
+			else
+			{
+				qtdFalsoAcerto++;
+			}
+
+		} /*End-if*/
+	}
+
+	acertos = (qtdAcertos * 100) / 50;
+	falsosAceitos = (qtdFalsoAcerto * 100) / 25;
+	falsosRejeicao = (qtdFalsaRejeicao * 100) / 25;
+	printf("\t Os testes terminaram!!!\n\n");
+	printf("\t Métricas:\n");						   // GRASS 1, ASPHALT 0
+	printf("\t TAXA DE ACERTOS:         %.0lf%%\n", acertos);		   // % do total de 50imgs
+	printf("\t TAXA DE FALSA ACEITAÇÃO: %.0lf%%\n", falsosAceitos);	  // é asphalt mas saiu grama
+	printf("\t TAXA DE FALSA REJEIÇÃO:  %.0lf%%\n\n", falsosRejeicao); // é grama mais saiu asphalt
+}
+
 int main(int argc, char *argv[])
 {
 	double start_treino, end_treino, total_treino;
@@ -679,7 +707,6 @@ int main(int argc, char *argv[])
 
 	FILE *treinoFile = NULL;
 	FILE *testeFile = NULL;
-
 
 	testeFile = fopen(PREVISAO, "r");
 	treinoFile = fopen(TREINO, "r");
@@ -718,11 +745,20 @@ int main(int argc, char *argv[])
 	neuroniosPorCamada[1] = atoi(argv[1]);
 	neuroniosPorCamada[2] = 1;
 
-	sprintf(saida, "Rede_Neural.dat");
-
+	printf("\t Rede Neural Feed-Foward com 3 Camadas:\n\n");
+	printf("\t 3 Camadas: Entrada, Oculta e Saída.\n");
+	printf("\t Camada de entrada com 536 neuronios.\n");
+	printf("\t Camada Oculta com %d neuronios.\n", neuroniosPorCamada[1]);
+	printf("\t Camada de saida com 1 neuronio.\n\n");
+	printf("\t Criando Rede Neural...\n");
 	Neuronio *RNA = criaRedeNeuronal(neuroniosPorCamada);
+	printf("\t Rede neural criada!\n\n");
+	printf("\t Comecando treinamento com algoritmo BACKPROPAGATION. [VAI DEMORAR!]\n");
 	treinaRedeNeuronal(RNA, neuroniosPorCamada, inputs, targets);
 	end_treino = clock();
+	total_treino = (double)(end_treino - start_treino) / CLOCKS_PER_SEC;
+	printf("\t Rede treinada em %.2f segundos.\n\n", total_treino);
+	printf("\t Comecando os testes da RNA!. [VAI DEMORAR!]\n");
 
 	if (testeFile != NULL)
 	{
@@ -741,11 +777,11 @@ int main(int argc, char *argv[])
 			}
 		}
 		prever(RNA, neuroniosPorCamada, previsao, previsaoResultados);
+		imprimeResultadoPrevisao(RNA,previsao,testeFile,previsaoResultados);
 		fclose(testeFile);
 	}
 
 	fclose(treinoFile);
 	//end_t = clock();
-	total_treino = (double)(end_treino - start_treino) / CLOCKS_PER_SEC;
-	printf("\n\t\tRede treinada em %.2f segundos.\n\n", total_treino);
+	
 }
