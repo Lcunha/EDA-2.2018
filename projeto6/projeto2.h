@@ -1,170 +1,59 @@
-/**
- * Projeto 06 - Redes Neurais
- * Guilherme Lima Matos Leal - 15/0128312
- * Lucas Filipe de Carvalho Cunha - 18/0053817
- **/
+#ifndef PROJETO2_H
+#define PROJETO2_H
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <time.h>
 #include <math.h>
+#include "mesclador.h"
+
+#define MAXLINHA 50
+#define MAXCOLUNA 536
 //projeto 2
-void projeto2();
-void normalize(float *vet, float *vetNormalizado, int limite);
-void doRandom(int *, int limite);
+FILE *getAsphaltImage(FILE *, int id);
+FILE *getGrassImage(FILE *fp, int id);
+
+void f_random(int *, int limite);
 void linhasColunas(FILE *, int *linhas, int *colunas);
 void setMatrizFile(FILE *fp, int **matrizFile, int lin, int col);
 void ILBP(int **matrizFile, int lin, int col, int *ilbp);
 void GLCM(int **matrizFile, int lin, int col, float *metricas);
 void calculaMetricas(int **glcm, float *metricas, int initialPosition, int linhaColuna);
+void euclidianDistance(int *vetorNormalizado, int *vetorA, int *vetorB, int limite);
+void normalize(float *vet, float *vetNormalizado, int limite);
+void concatenaIlbpGlcm(float *ilbpGlcm, int *ilbp, float *glcm);
+void salvarVetor(FILE *auxGrass, float *vetNormalizado, int typeVet);
 void setVetorBinario(int **matrizFile, int lin, int col, char *vetorbin);
 
-void getFeaturesAsphalt(float **resultadoAsfalto);
-void getFeaturesGrass(float **resultadoGrama);
-void concatenaIlbpGlcm(float *ilbpGlcm, int *ilbp, float *glcm);
-void calculaMediaTreinamento(float **matTreinamento, float *vetMedia);
-void setResultado(float **matResultado, float *vetNormalizado, int contador);
-void printaResultado(float aceitacao, float falsaRejeicao, float falsaAceitacao);
-void calculaTaxas(float *mediaGrama, float *mediaAsfalto, float **resultadoGrama, float **resultadoAsfalto);
-
-int calc_menorDecimal(char *bin);
-float euclidianDistance(float *medias, float **resultados, int indice);
+int calcMenorDecimal(char *bin);
 double calculaContraste(int **matriz, int linhaColuna);
 double calculaHomogeneidade(int **matriz, int linhaColuna);
 double calculaEnergia(int **matriz, int linhaColuna);
-
-FILE *getAsphaltImage(FILE *, int id);
-FILE *getGrassImage(FILE *fp, int id);
 //fim do projeto 2
-
-int main(int argc, char *argv[])
-{
-  projeto2();
-  int neuronios_Camadaoculta = atoi(argv[1]);
-  if (argc != 2)
-  {
-    printf("Parametro incorreto. Exit.\n");
-    exit(1);
-  }
-  printf("Neuronios Camada Oculta: %d\n-----------------------------\n", neuronios_Camadaoculta);
-  return 0;
-}
 
 void projeto2()
 {
-  float **resultadoGrama, **resultadoAsfalto;
-  resultadoAsfalto = (float **)malloc(50 * sizeof(float *));
-  for (int i = 0; i < 50; i++)
-  {
-    *(resultadoAsfalto + i) = (float *)malloc(536 * sizeof(float));
-  }
-
-  resultadoGrama = (float **)malloc(50 * sizeof(float *));
-  for (int i = 0; i < 50; i++)
-  {
-    *(resultadoGrama + i) = (float *)malloc(536 * sizeof(float));
-  }
-
-  getFeaturesAsphalt(resultadoAsfalto);
-  FILE *asfalto;
-  asfalto = fopen("asphalt.txt", "w+");
-
-  for (int a = 0; a < 50; a++)
-  {
-    if (a > 0)
-      fprintf(asfalto, "\n");
-    for (int i = 0; i < 536; i++)
-    {
-      fprintf(asfalto, "%f ", (resultadoAsfalto[a][i]));
-    }
-  }
-
-  fclose(asfalto);
-
-  /*
-  getFeaturesGrass(resultadoGrama);
-  FILE *grama;
-  asfalto = fopen("grass.txt", "w+");
-
-  for (int a = 0; a < 50; a++)
-  {
-    if (a > 0)
-      fprintf(grama, "\n");
-    for (int i = 0; i < 536; i++)
-    {
-      fprintf(asfalto, "%f ", (resultadoGrama[a][i]));
-    }
-  }
-  fclose(grama);
-  */
-  for (int i = 0; i < 50; i++)
-  {
-    free(*(resultadoGrama + i));
-  }
-  for (int i = 0; i < 50; i++)
-  {
-    free(*(resultadoAsfalto + i));
-  }
-  free(resultadoAsfalto);
-  free(resultadoGrama);
-}
-
-void getFeaturesGrass(float **resultadoGrama)
-{
-  int grass[50];
-  int lin, col;
+  printf("\t Gerando Vetores pelo Projeto 2.. aguarde.\n");
+  int grass[MAXLINHA], asphalt[MAXLINHA];
+  int lin = 0, col = 0, aux = 0;
   int **matrizFile, *ilbp;
-  float *glcm, *ilbpGlcm, *ilbpGlcmNormalizado;
+  float *glcm, *ilbpGlcm, *ilbpGlcmNormalizadoGrass, *ilbpGlcmNormalizadoAsphaut, *mediaGrama, *mediaAsfalto;
+  float **resultadoGrama, **resultadoAsfalto, **treinamentoResultadoGrama, **treinamentoResultoAsfalto;
 
-  doRandom(grass, 50);
-  for (int i = 0; i < 50; i++)
+  resultadoAsfalto = (float **)malloc(MAXLINHA * sizeof(float *));
+
+  for (int i = 0; i < MAXLINHA; i++)
   {
-    FILE *fileGrass;
-    fileGrass = getGrassImage(fileGrass, grass[i]);
-    linhasColunas(fileGrass, &lin, &col);
-    matrizFile = (int **)malloc(lin * sizeof(int *));
-    for (int j = 0; j < lin; j++)
-    {
-      *(matrizFile + j) = (int *)malloc(col * sizeof(int));
-    }
-    setMatrizFile(fileGrass, matrizFile, lin, col);
-
-    ilbp = (int *)calloc(512, sizeof(int *));
-    glcm = (float *)calloc(24, sizeof(float));
-    ilbpGlcm = (float *)calloc(536, sizeof(float));
-    ilbpGlcmNormalizado = (float *)calloc(536, sizeof(float));
-
-    ILBP(matrizFile, lin, col, ilbp);
-    GLCM(matrizFile, lin, col, glcm);
-    concatenaIlbpGlcm(ilbpGlcm, ilbp, glcm);
-    normalize(ilbpGlcm, ilbpGlcmNormalizado, 536);
-    setResultado(resultadoGrama, ilbpGlcm, i);
-
-    free(ilbp);
-    free(glcm);
-    free(ilbpGlcm);
-    free(ilbpGlcmNormalizado);
-    for (int j = 0; j < lin; j++)
-    {
-      free(*(matrizFile + j));
-    }
-    free(matrizFile);
-    fclose(fileGrass);
+    *(resultadoAsfalto + i) = (float *)malloc(MAXCOLUNA * sizeof(float));
   }
-}
 
-void getFeaturesAsphalt(float **resultadoAsfalto)
-{
-  int asphalt[50];
-  int lin, col;
-  int **matrizFile, *ilbp;
-  float *glcm, *ilbpGlcm, *ilbpGlcmNormalizado;
+  f_random(asphalt, MAXLINHA);
+  aux = 0;
+  FILE *auxAsphalt;
+  auxAsphalt = fopen("asphalt.dat", "w+");
+  FILE *auxGrass;
+  auxGrass = fopen("grass.dat", "w+");
 
-  doRandom(asphalt, 50);
-  // Percorre arquivos asphalt
-  //aqui
-  for (int i = 0; i < 5; i++)
+  for (int i = 0; i < MAXLINHA; i++)
   {
     FILE *fileAsphalt;
     fileAsphalt = getAsphaltImage(fileAsphalt, asphalt[i]);
@@ -178,33 +67,88 @@ void getFeaturesAsphalt(float **resultadoAsfalto)
 
     ilbp = (int *)calloc(512, sizeof(int *));
     glcm = (float *)calloc(24, sizeof(float));
-    ilbpGlcm = (float *)calloc(536, sizeof(float));
-    ilbpGlcmNormalizado = (float *)calloc(536, sizeof(float));
+    ilbpGlcm = (float *)calloc(MAXCOLUNA, sizeof(float));
+    ilbpGlcmNormalizadoAsphaut = (float *)calloc(MAXCOLUNA, sizeof(float));
 
     ILBP(matrizFile, lin, col, ilbp);
     GLCM(matrizFile, lin, col, glcm);
     concatenaIlbpGlcm(ilbpGlcm, ilbp, glcm);
-    normalize(ilbpGlcm, ilbpGlcmNormalizado, 536);
-    setResultado(resultadoAsfalto, ilbpGlcmNormalizado, i);
+    normalize(ilbpGlcm, ilbpGlcmNormalizadoAsphaut, MAXCOLUNA);
+    salvarVetor(auxAsphalt, ilbpGlcmNormalizadoAsphaut, 0);
+
     free(ilbp);
     free(glcm);
     free(ilbpGlcm);
-    free(ilbpGlcmNormalizado);
+
     for (int j = 0; j < lin; j++)
     {
       free(*(matrizFile + j));
     }
     free(matrizFile);
     fclose(fileAsphalt);
+    free(ilbpGlcmNormalizadoAsphaut);
   }
-}
 
-void setResultado(float **matResultado, float *vetNormalizado, int contador)
-{
-  for (int i = 0; i < 536; i++)
+  resultadoGrama = (float **)malloc(MAXLINHA * sizeof(float *));
+  for (int i = 0; i < MAXLINHA; i++)
   {
-    *(*(matResultado + contador) + i) = *(vetNormalizado + i);
+    *(resultadoGrama + i) = (float *)malloc(MAXCOLUNA * sizeof(float));
   }
+  f_random(grass, MAXLINHA);
+  aux = 0;
+  printf("\t Aguarde, so mais um pouco! =P\n");
+  //aqui
+  for (int i = 0; i < MAXLINHA; i++)
+  {
+    FILE *fileGrass;
+    fileGrass = getGrassImage(fileGrass, grass[i]);
+    linhasColunas(fileGrass, &lin, &col);
+    matrizFile = (int **)malloc(lin * sizeof(int *));
+    for (int j = 0; j < lin; j++)
+    {
+      *(matrizFile + j) = (int *)malloc(col * sizeof(int));
+    }
+    setMatrizFile(fileGrass, matrizFile, lin, col);
+
+    ilbp = (int *)calloc(512, sizeof(int *));
+    glcm = (float *)calloc(24, sizeof(float));
+    ilbpGlcm = (float *)calloc(MAXCOLUNA, sizeof(float));
+    ilbpGlcmNormalizadoGrass = (float *)calloc(MAXCOLUNA, sizeof(float));
+    ILBP(matrizFile, lin, col, ilbp);
+    GLCM(matrizFile, lin, col, glcm);
+    concatenaIlbpGlcm(ilbpGlcm, ilbp, glcm);
+    normalize(ilbpGlcm, ilbpGlcmNormalizadoGrass, MAXCOLUNA);
+
+    salvarVetor(auxGrass, ilbpGlcmNormalizadoGrass, 1);
+
+    free(ilbp);
+    free(glcm);
+    free(ilbpGlcm);
+    for (int j = 0; j < lin; j++)
+    {
+      free(*(matrizFile + j));
+    }
+    free(matrizFile);
+    fclose(fileGrass);
+    free(ilbpGlcmNormalizadoGrass);
+  }
+  fclose(auxAsphalt);
+  fclose(auxGrass);
+} //fim do projeto2
+
+//funçoes projeto 2
+void salvarVetor(FILE *vetor, float *vetNormalizado, int typeVet)
+{
+  int linha = 0;
+  int i = 0;
+  while (i < (MAXCOLUNA))
+  {
+    fprintf(vetor, "%f;", vetNormalizado[i]);
+    i++;
+  }
+  linha++;
+  if (linha <50)
+    fprintf(vetor, "%f;:%d;\n", vetNormalizado[i], typeVet);
 }
 
 void concatenaIlbpGlcm(float *ilbpGlcm, int *ilbp, float *glcm)
@@ -213,7 +157,7 @@ void concatenaIlbpGlcm(float *ilbpGlcm, int *ilbp, float *glcm)
   {
     *(ilbpGlcm + j) = *(ilbp + j);
   }
-  for (int j = 512; j < 536; j++)
+  for (int j = 512; j < MAXCOLUNA; j++)
   {
     *(ilbpGlcm + j) = *(glcm + (j - 512));
   }
@@ -229,16 +173,15 @@ void ILBP(int **matrizFile, int lin, int col, int *ilbp)
     for (int j = 1; j < col - 1; j++)
     {
       setVetorBinario(matrizFile, i, j, vetorBinario);
-      menorDecimal = calc_menorDecimal(vetorBinario);
+      menorDecimal = calcMenorDecimal(vetorBinario);
       ilbp[menorDecimal]++;
     }
   }
 }
 
-int calc_menorDecimal(char *bin)
+int calcMenorDecimal(char *bin)
 {
-
-  int decimal, m = 0, menorNumero = 512;
+  int decimal, m = 0, menor = 512;
   char aux;
   int dec[9];
 
@@ -254,6 +197,7 @@ int calc_menorDecimal(char *bin)
       }
       j++;
     }
+
     aux = bin[8];
     for (int c = 8; c > 0; c--)
     {
@@ -264,31 +208,32 @@ int calc_menorDecimal(char *bin)
     dec[m] = decimal;
     m++;
   }
+
   for (int i = 0; i < 9; i++)
   {
-    if (menorNumero > dec[i])
+    if (menor > dec[i])
     {
-      menorNumero = dec[i];
+      menor = dec[i];
     }
   }
-  return menorNumero;
+  return menor;
 }
 
 void setVetorBinario(int **matrizFile, int lin, int col, char *vetorbin)
 {
   float soma = 0, media;
-  int x = 0, y = 0;
+  int i, j, x = 0, y = 0;
   char **bin;
 
   bin = (char **)malloc(3 * sizeof(char *));
-  for (int i = 0; i < 3; i++)
+  for (i = 0; i < 3; i++)
   {
     *(bin + i) = (char *)malloc(3 * sizeof(char));
   }
 
-  for (int i = lin - 1; i <= lin + 1; i++)
+  for (i = lin - 1; i <= lin + 1; i++)
   {
-    for (int j = col - 1; j <= col + 1; j++)
+    for (j = col - 1; j <= col + 1; j++)
     {
       soma += *(*(matrizFile + i) + j);
     }
@@ -296,9 +241,9 @@ void setVetorBinario(int **matrizFile, int lin, int col, char *vetorbin)
 
   media = soma / 9.0;
 
-  for (int i = lin - 1; i <= lin + 1; i++)
+  for (i = lin - 1; i <= lin + 1; i++)
   {
-    for (int j = col - 1; j <= col + 1; j++)
+    for (j = col - 1; j <= col + 1; j++)
     {
       if (*(*(matrizFile + i) + j) < media)
       {
@@ -323,7 +268,7 @@ void setVetorBinario(int **matrizFile, int lin, int col, char *vetorbin)
   vetorbin[7] = *(*(bin + 1) + 0);
   vetorbin[8] = *(*(bin + 1) + 1);
 
-  for (int i = 0; i < 3; i++)
+  for (i = 0; i < 3; i++)
   {
     free(*(bin + i));
   }
@@ -375,7 +320,7 @@ FILE *getAsphaltImage(FILE *fp, int id)
 
   if (fp == NULL)
   {
-    printf("Falha ao abrir arquivo de imagem.\n");
+    printf("Falha leitura arquivo DataSet/...\n");
     exit(1);
   }
   return fp;
@@ -393,13 +338,13 @@ FILE *getGrassImage(FILE *fp, int id)
 
   if (fp == NULL)
   {
-    printf("Falha.\n");
+    printf("Falha leitura /DataSet/.. .\n");
     exit(1);
   }
   return fp;
 }
 
-void doRandom(int *vet, int limite)
+void f_random(int *vet, int limite)
 {
   srand(time(NULL));
   for (int i = 1; i < limite + 1; i++)
@@ -421,7 +366,6 @@ void doRandom(int *vet, int limite)
 void normalize(float *vet, float *vetNormalizado, int limite)
 {
   float menor = 9999999, maior = 0;
-
   for (int i = 0; i < limite; i++)
   {
     if (vet[i] < menor)
@@ -429,19 +373,24 @@ void normalize(float *vet, float *vetNormalizado, int limite)
     if (vet[i] > maior)
       maior = vet[i];
   }
+
   for (int i = 0; i < limite; i++)
     vetNormalizado[i] = (vet[i] - menor) / (maior - menor);
 }
 
-float euclidianDistance(float *medias, float **resultados, int indice)
+void euclidianDistance(int *vetorNormalizado, int *vetorA, int *vetorB, int limite)
 {
-  float distancia, soma = 0;
+  float distanciaA, distanciaB;
+  int somaA = 0, somaB = 0;
 
-  for (int i = 0; i < 536; i++)
+  for (int i = 0; i < limite; i++)
   {
-    soma += pow(*(medias + i) - *(*(resultados + indice) + i), 2);
+    somaA += (pow((vetorNormalizado[i] + vetorA[i]), 2));
+    somaB += (pow((vetorNormalizado[i] + vetorB[i]), 2));
   }
-  return distancia = (pow(soma, 0.5));
+
+  distanciaA = (pow(somaA, 0.5));
+  distanciaB = (pow(somaB, 0.5));
 }
 
 void calculaMetricas(int **glcm, float *metricas, int initialPosition, int linhaColuna)
@@ -518,6 +467,7 @@ void GLCM(int **matrizFile, int lin, int col, float *metricas)
     }
     else if (k == 5)
     {
+
       for (int i = 1; i < lin; i++)
       {
         for (int j = 0; j < col - 1; j++)
@@ -595,4 +545,5 @@ double calculaEnergia(int **matriz, int linhaColuna)
   }
   return total;
 }
-//fim do projeto 2
+//fim funções do projeto 2
+#endif
