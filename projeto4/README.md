@@ -1,4 +1,4 @@
-##Proposta
+## Proposta
 
 Uma simulação controlada por eventos é um programa de computador
 que mimetiza o comportamento de pessoas ou objetos em um sistema,
@@ -9,34 +9,40 @@ evento. O objetivo deste projeto é escrever um programa de simulação
 que gerencia o uso das pistas de um grande aeroporto. As pistas são
 usadas para pousos e decolagens e os requisitos e parâmetros desejados
 são descritos a seguir.
+
 • O aeroporto possui três pistas: 1, 2 e 3, sendo que a pista 3
 somente é usada para decolagens, a menos que ocorra uma
 emergência;
+
 • As pistas 1 e 2 são usadas tanto para pousos quanto para
 decolagens.
+
 • A cada execução do programa (Uma UnidadeTempo é igual a 5min),
 de 20 a 64 voos requerem pousos ou decolagens ao aeroporto. Os
 voos são identificados por duas letras maiúsculas, seguidas por 4
 números inteiros. Uma lista com 64 códigos de voos é fornecida
 abaixo.
+
 • A letra A, indicando Aproximação, seguida de um valor inteiro de 0
 a 12, onde o valor 0 indica prioridade máxima de pouso (0 de
 combustível restante, sendo que a cada 10*UnidadeTempo a
 quantidade de combustível deve decrescer em um em todas as
 aeronaves em aproximação), ou a letra D, de Decolagem (sem
 valores marcados de combustível).
+
 • Cada voo é composto por:
 o um código de voo contendo 2 letras maiúsculas e 4 números
 inteiros (esses códigos são somente para identificação, use
 somente os códigos de voo fornecidos neste documento, é
 fornecido 64 códigos, o máximo alcance do seu número
-aleatório de voos);
-o o modo de voo (aproximação ‘A’ ou decolagem ‘D’);
+aleatório de voos);o o modo de voo (aproximação ‘A’ ou decolagem ‘D’);
 o nível de combustível caso o modo de voo seja ‘A’;
+
 • Os voos devem ser atendidos em uma estratégia de fila. Quando
 uma emergência (0 de combustível para qualquer Aproximação)
 acontecer, a aeronave em questão tomará a frente da fila de espera,
 ganhando prioridade.
+
 • Se ocorrer de 3 ou mais aeronaves se aproximarem com 0 nível de
 combustível, uma mensagem de “ALERTA GERAL DE DESVIO DE
 AERONAVE” deve ser emitida. Nesse caso, a pista 3 deve ser
@@ -47,14 +53,17 @@ combustível menor que zero, devem cair), deve ser exibida uma
 mensagem de “ALERTA CRÍTICO, AERONAVE IRÁ CAIR” e
 simplesmente removê-la imediatamente da fila, tratando as
 aeronaves restantes.
+
 • Caso alguma pista seja liberada enquanto uma aeronave está
 planando, isto é, com nível de combustível igual a zero, esta poderá
 pousar, entretanto, caso o nível de combustível se torne menor que
 zero (decrescendo mais um nível de combustível ao final de
 10*UnidadeTempo) a aeronave deverá cair imediatamente.
+
 • Um relógio global deve ser inicializado (o horário de início é de livre
 escolha) e toda a lista deve ser gerada aleatoriamente no início da
 execução.
+
 • O programa de simulação deverá gerar aleatoriamente os valores
 das seguintes variáveis: NVoos (20 a 64), NAproximações (10 a 32),
 NDecolagens (10 a 32), CombA (0 a 12), sendo que NAproximações
@@ -67,6 +76,7 @@ ser considerados os tempos nos quais as pistas ficam indisponíveis
 para novos voos em cada procedimento. O tempo gasto durante a
 aproximação é de 1*UnTempo; um pouso, 3*UnTempo e o
 tempo gasto durante uma decolagem é igual a 2*UnTempo.
+
 • É importante lembrar que as aeronaves que irão decolar, não
 precisarão ter nível de combustível.
 Elementos a serem mostrados na tela:
