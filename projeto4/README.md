@@ -1,4 +1,14 @@
-## Proposta
+
+## Projeto 02
+
+### Execução
+
+```
+gcc proj4.c -o proj4 -lm
+./proj4 X
+```
+
+### Proposta
 
 Uma simulação controlada por eventos é um programa de computador
 que mimetiza o comportamento de pessoas ou objetos em um sistema,
