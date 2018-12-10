@@ -79,6 +79,7 @@ tempo gasto durante uma decolagem é igual a 2*UnTempo.
 
 • É importante lembrar que as aeronaves que irão decolar, não
 precisarão ter nível de combustível.
+
 Elementos a serem mostrados na tela:
 ---------------------------------------------------------------------------------
 “Aeroporto Internacional de Brasília”
@@ -101,9 +102,8 @@ Código do voo:
 Status: [“aeronave decolou” ou “aeronave pousou”]
 Horário do início do procedimento:
 Número da pista:
-.
-.
-.
+
+
 Lista de sequências de códigos de voos para o programa: [“VG3001”,
 “JJ4404”, “LN7001”, “TG1501”, “GL7602”, “TT1010”, “AZ1009”, “AZ1008”,
 “AZ1010”, “TG1506”, “VG3002”, “JJ4402”, “GL7603”, “RL7880”, “AL0012”,
