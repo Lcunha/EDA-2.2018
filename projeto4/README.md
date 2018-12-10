@@ -66,8 +66,7 @@ execução.
 
 • O programa de simulação deverá gerar aleatoriamente os valores
 das seguintes variáveis: NVoos (20 a 64), NAproximações (10 a 32),
-NDecolagens (10 a 32), CombA (0 a 12), sendo que NAproximações
-+ NDecolagens = NVoos e CombA é o combustível das aeronaves
+NDecolagens (10 a 32), CombA (0 a 12), sendo que NAproximações + NDecolagens = NVoos e CombA é o combustível das aeronaves
 em aproximação. Após gerar os valores, o programa deve
 selecionar os códigos dos voos da lista, e montar a fila de
 atendimento. A simulação deverá cobrir todos os pedidos gerados,
