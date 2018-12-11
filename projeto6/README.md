@@ -81,15 +81,7 @@ treinamento deve ser apresentado à rede e o seu erro deve ser calculado,
 armazenado e o erro propagado para a rede. Em seguida, o próximo
 elemento deve ser apresentado e o erro também deve ser armazenado e
 propagado. Ao final da apresentação de todos os elementos, deve ser
-calculo o erro médio quadrático.
-
-$$
-
-MSE = \frac{1 / n}{ B + 3}
-
-$$
-
-, sendo que Yi é o valor esperado e ^Yi é o valor obtido. Ou seja, devese
+calculo o erro médio quadrático, sendo que Yi é o valor esperado e ^Yi é o valor obtido. Ou seja, devese
 calcular o erro médio quadrático do erro. A apresentação do conjunto
 inteiro de treinamento à rede uma vez é chamada de época. O conjunto
 de treinamento deve ser reapresentado à rede e os erros propagados até
