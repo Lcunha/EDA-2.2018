@@ -1,8 +1,0 @@
-
-gcc projeto6.c projeto2.h mesclador.h -o proj6 -lm
-$./proj6 X
-
-X = valor de neuronios camada oculta
-
-Guilherme Lima Matos Leal - 15/0128312
-Lucas Filipe de Carvalho Cunha - 18/0053817
