@@ -3,7 +3,7 @@
 
 ### Projetos
 
-* Projeto 1 - Função de atvação de rna, Torre de Hanoi e Recebe notas.
+* Projeto 1 - Função de ativação de rna, Torre de Hanoi e Recebe notas.
 * Projeto 2 - Classificação de imagens por uma pseudo rna.
 * Projeto 3 - Agenda.
 * Projeto 4 - Controle de Voos.
